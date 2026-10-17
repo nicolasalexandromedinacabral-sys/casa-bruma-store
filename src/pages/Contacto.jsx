@@ -1,7 +1,11 @@
 import React from "react";
 
 function Contacto() {
-  return <div>Hola mundo</div>;
+  return (
+    <div>
+      <h1>Probando rmas</h1>
+    </div>
+  );
 }
 
 export default Contacto;
