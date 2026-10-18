@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { data } from "react-router-dom";
+
+const validate = (data) => {
+  const newErrors = {};
+  if (data.firstName === "") {
+    newErrors.firstName = "El nombre es obligatorio";
+  } else if (data.firstName.length > 50) {
+    newErrors.firstName = "El nombre es demasiado largo";
+  }
+  if (data.lastName === "") newErrors.lastName = "El apellido es obligatorio";
+
+  if (data.email === "") {
+    newErrors.email = "El email es obligatorio";
+  } else if (!data.email.includes("@")) {
+    newErrors.email = "El email no es valido";
+  }
+
+  return newErrors;
+};
 
 export const FormularioCompra = () => {
-  //const [firstName, setFirstName] = useState("");
-  //const [lastName, setLastName] = useState("");
-  //const [email, setEmail] = useState("");
-  //const [phone, setPhone] = useState("");
-  //const [modality, setModality] = useState("");
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,24 +26,48 @@ export const FormularioCompra = () => {
     phone: "",
     modality: "",
   });
-  console.log({
-    firstName,
-    lastName,
-    email,
-    phone,
-    modality,
-  });
 
-  const handleSubmmit = (event) => {
-    event.preventDefault();
-    console.log(event);
-    console.log("handleSubmmit");
+  const [errors, setErrors] = useState({});
+
+  console.log(formData);
+
+  const handleChange = (event) => {
+    console.log("handleChange", {
+      value: event.target.value,
+      name: event.target.name,
+    });
+    console.log(event.target.value);
+
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Formulario por enviar");
+
+    const newErrors = validate(formData);
+
+    setErrors(newErrors);
+
+    console.log(newErrors);
+    console.log(Object.keys(newErrors));
+    if (Object.keys(newErrors).length > 0) {
+      console.log("Complete los campos faltantes");
+      return;
+    }
+
+    console.log("Formulario Enviado!");
+  };
+
+  console.log(errors);
 
   return (
     <div className="row g-4">
       <div className="col-md-7">
-        <form onSubmit={handleSubmmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="mb-3">
             <label htmlFor="firstName" className="form-label">
               Nombres
@@ -41,10 +76,13 @@ export const FormularioCompra = () => {
               type="text"
               id="firstName"
               name="firstName"
-              className="form-control"
+              className={`form-control ${errors.firstName ? "is-invalid" : ""}`}
               value={formData.firstName}
-              onChange={(event) => setFirstName(event.target.value)}
+              onChange={handleChange}
             />
+            {errors.firstName && (
+              <div className="invalid-feedback d-block">{errors.firstName}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -55,10 +93,13 @@ export const FormularioCompra = () => {
               type="lastName"
               id="lastName"
               name="lastName"
-              className="form-control"
+              className={`form-control ${errors.lastName ? "is-invalid" : ""}`}
               value={formData.lastName}
-              onChange={(event) => setLastName(event.target.value)}
+              onChange={handleChange}
             />
+            {errors.lastName && (
+              <div className="invalid-feedback d-block">{errors.lastName}</div>
+            )}
           </div>
 
           <div className="mb-3">
@@ -69,15 +110,18 @@ export const FormularioCompra = () => {
               type="email"
               id="email"
               name="email"
-              className="form-control"
+              className={`form-control ${errors.email ? "is-invalid" : ""}`}
               value={formData.email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={handleChange}
             />
+            {errors.email && (
+              <div className="invalid-feedback d-block">{errors.email}</div>
+            )}
           </div>
 
           <div className="mb-3">
             <label htmlFor="phone" className="form-label">
-              Télofono
+              Teléfono
             </label>
             <input
               type="phone"
@@ -85,7 +129,7 @@ export const FormularioCompra = () => {
               name="phone"
               className="form-control"
               value={formData.phone}
-              onChange={(event) => setPhone(event.target.value)}
+              onChange={handleChange}
             />
           </div>
 
@@ -97,7 +141,7 @@ export const FormularioCompra = () => {
               name="modality"
               id="modality"
               value={formData.modality}
-              onChange={(event) => setModality(event.target.value)}
+              onChange={handleChange}
               className="form-select"
             >
               <option value="">Elegí una opción</option>
