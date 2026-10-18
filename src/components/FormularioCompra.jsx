@@ -4,11 +4,25 @@ export const FormularioCompra = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  console.log({
+    firstName,
+    lastName,
+    email,
+    phone,
+  });
+
+  const handleSubmmit = (event) => {
+    event.preventDefault();
+    console.log(event);
+    console.log("handleSubmmit");
+  };
 
   return (
     <div className="row g-4">
       <div className="col-md-7">
-        <form>
+        <form onSubmit={handleSubmmit}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Nombres
@@ -19,7 +33,7 @@ export const FormularioCompra = () => {
               name="firstName"
               className="form-control"
               value={firstName}
-              onChange={(evento) => setFirstName(evento.target.value)}
+              onChange={(event) => setFirstName(event.target.value)}
             />
           </div>
 
@@ -33,7 +47,7 @@ export const FormularioCompra = () => {
               name="lastName"
               className="form-control"
               value={lastName}
-              onChange={(evento) => setLastName(evento.target.value)}
+              onChange={(event) => setLastName(event.target.value)}
             />
           </div>
 
@@ -47,9 +61,30 @@ export const FormularioCompra = () => {
               name="email"
               className="form-control"
               value={email}
-              onChange={(evento) => setEmail(evento.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </div>
+
+          <div className="mb-3">
+            <label htmlFor="phone" className="form-label">
+              Télofono
+            </label>
+            <input
+              type="phone"
+              id="phone"
+              name="phone"
+              className="form-control"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary">
+            Enviar
+          </button>
+          <button type="button" className="btn btn-secondary">
+            Cancelar
+          </button>
         </form>
       </div>
     </div>
