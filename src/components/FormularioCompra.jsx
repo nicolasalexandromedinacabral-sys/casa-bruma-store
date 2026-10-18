@@ -1,16 +1,26 @@
 import { useState } from "react";
+import { data } from "react-router-dom";
 
 export const FormularioCompra = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  //const [firstName, setFirstName] = useState("");
+  //const [lastName, setLastName] = useState("");
+  //const [email, setEmail] = useState("");
+  //const [phone, setPhone] = useState("");
+  //const [modality, setModality] = useState("");
 
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    modality: "",
+  });
   console.log({
     firstName,
     lastName,
     email,
     phone,
+    modality,
   });
 
   const handleSubmmit = (event) => {
@@ -24,7 +34,7 @@ export const FormularioCompra = () => {
       <div className="col-md-7">
         <form onSubmit={handleSubmmit}>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">
+            <label htmlFor="firstName" className="form-label">
               Nombres
             </label>
             <input
@@ -32,7 +42,7 @@ export const FormularioCompra = () => {
               id="firstName"
               name="firstName"
               className="form-control"
-              value={firstName}
+              value={formData.firstName}
               onChange={(event) => setFirstName(event.target.value)}
             />
           </div>
@@ -46,7 +56,7 @@ export const FormularioCompra = () => {
               id="lastName"
               name="lastName"
               className="form-control"
-              value={lastName}
+              value={formData.lastName}
               onChange={(event) => setLastName(event.target.value)}
             />
           </div>
@@ -60,7 +70,7 @@ export const FormularioCompra = () => {
               id="email"
               name="email"
               className="form-control"
-              value={email}
+              value={formData.email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
@@ -74,9 +84,26 @@ export const FormularioCompra = () => {
               id="phone"
               name="phone"
               className="form-control"
-              value={phone}
+              value={formData.phone}
               onChange={(event) => setPhone(event.target.value)}
             />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="modality" className="form-label">
+              Modalidad
+            </label>
+            <select
+              name="modality"
+              id="modality"
+              value={formData.modality}
+              onChange={(event) => setModality(event.target.value)}
+              className="form-select"
+            >
+              <option value="">Elegí una opción</option>
+              <option value="presencial">Presencial</option>
+              <option value="virtual">Virtual</option>
+            </select>
           </div>
 
           <button type="submit" className="btn btn-primary">
