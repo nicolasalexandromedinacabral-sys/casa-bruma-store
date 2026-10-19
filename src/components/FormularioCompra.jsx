@@ -14,6 +14,18 @@ const validate = (data) => {
   } else if (!data.email.includes("@")) {
     newErrors.email = "El email no es valido";
   }
+  if (data.phone === "") {
+    newErrors.phone = "El teléfono debe ser obligatorio";
+  }
+  if (data.address === "") {
+    newErrors.address = "La dirección es obligatoria";
+  }
+  if (!data.modality) {
+    newErrors.modality = "La modalidad de entrega debe ser obligatoria";
+  }
+  if (data.message.length > 200) {
+    newErrors.message = "El mensaje no puede superar los 200 carecteres";
+  }
 
   return newErrors;
 };
@@ -24,7 +36,9 @@ export const FormularioCompra = () => {
     lastName: "",
     email: "",
     phone: "",
+    address: "",
     modality: "",
+    message: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -127,27 +141,69 @@ export const FormularioCompra = () => {
               type="phone"
               id="phone"
               name="phone"
-              className="form-control"
+              placeholder="+541123456789"
+              className={`form-control ${errors.phone ? "is-invalid" : ""}`}
               value={formData.phone}
               onChange={handleChange}
             />
+            {errors.phone && (
+              <div className="invalid-feedback d-block">{errors.phone}</div>
+            )}
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="address" className="form-label">
+              Dirección
+            </label>
+            <input
+              type="address"
+              id="address"
+              name="address"
+              className={`form-control ${errors.address ? "is-invalid" : ""}`}
+              value={formData.address}
+              onChange={handleChange}
+            />
+            {errors.phone && (
+              <div className="invalid-feedback d-block">{errors.address}</div>
+            )}
           </div>
 
           <div className="mb-3">
             <label htmlFor="modality" className="form-label">
-              Modalidad
+              Metodo de Entrega
             </label>
             <select
               name="modality"
               id="modality"
               value={formData.modality}
               onChange={handleChange}
-              className="form-select"
+              className={`form-select ${errors.modality ? "is-invalid" : ""}`}
             >
-              <option value="">Elegí una opción</option>
-              <option value="presencial">Presencial</option>
-              <option value="virtual">Virtual</option>
+              <option value="">Metodo de Entrega</option>
+              <option value="presencial">Retiro en Sucursal</option>
+              <option value="domicilio">Envio a Domicilio</option>
             </select>
+            {errors.modality && (
+              <div className="invalid-feedback d-block">{errors.modality}</div>
+            )}
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="message" className="form-label">
+              Mensage o Aclaración
+            </label>
+            <textarea
+              name="message"
+              id="message"
+              value={formData.message}
+              onChange={handleChange}
+              className={`form-select ${errors.message ? "is-invalid" : ""}`}
+              rows="3"
+              placeholder="Escriba aquí cualquier aclaración sobre la entrega..."
+            ></textarea>
+            {errors.message && (
+              <div className="invalid-feedback d-block">{errors.message}</div>
+            )}
           </div>
 
           <button type="submit" className="btn btn-primary">
